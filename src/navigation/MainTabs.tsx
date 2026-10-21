@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import {
   createBottomTabNavigator,
   type BottomTabNavigationOptions,
@@ -11,9 +11,30 @@ import SettingScreen from '../screens/SettingScreen';
 import type { TabRoutes } from './types';
 
 const Tab = createBottomTabNavigator<TabRoutes>();
-const icons = { Chat: '💬', Contact: '👥', Noti: '🔔', Setting: '⚙' };
-function TabIcon({ name, color }: { name: keyof TabRoutes; color: string }) {
-  return <Text style={[styles.icon, { color }]}>{icons[name]}</Text>;
+const icons = {
+  Chat: require('../assets/menu/chat.png'),
+  Contact: require('../assets/menu/contact.png'),
+  Noti: require('../assets/menu/notification.png'),
+  Setting: require('../assets/menu/setting.png'),
+};
+function TabIcon({
+  name,
+  color,
+  focused,
+}: {
+  name: keyof TabRoutes;
+  color: string;
+  focused: boolean;
+}) {
+  return (
+    <View style={[styles.iconContainer, focused && styles.activeIcon]}>
+      <Image
+        source={icons[name]}
+        style={[styles.icon, { tintColor: color }]}
+        accessible={false}
+      />
+    </View>
+  );
 }
 function tabOptions({
   route,
@@ -29,7 +50,9 @@ function tabOptions({
     tabBarHideOnKeyboard: true,
     tabBarButtonTestID: `tab-${route.name}`,
     tabBarAccessibilityLabel: `Tab ${route.name}`,
-    tabBarIcon: ({ color }) => <TabIcon name={route.name} color={color} />,
+    tabBarIcon: ({ color, focused }) => (
+      <TabIcon name={route.name} color={color} focused={focused} />
+    ),
   };
 }
 export default function MainTabs() {
@@ -59,7 +82,15 @@ export default function MainTabs() {
   );
 }
 const styles = StyleSheet.create({
-  icon: { fontSize: 24 },
+  icon: { width: 24, height: 24 },
+  iconContainer: {
+    width: 48,
+    height: 30,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  activeIcon: { backgroundColor: '#EFEDFF' },
   bar: { backgroundColor: '#FFF', borderTopColor: '#EAEBF2' },
   label: { fontSize: 12, fontWeight: '600' },
 });
