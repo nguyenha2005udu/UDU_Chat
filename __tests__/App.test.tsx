@@ -57,7 +57,9 @@ test('requires nonempty credentials and opens Home and all four tabs', async () 
   await press('Tab Noti');
   expect(text()).toContain('Thông báo');
   await press('Tab Setting');
-  expect(text()).toContain('Cài đặt');
+  expect(text()).toContain('Hồ sơ cá nhân');
+  expect(text()).toContain('Thông tin cá nhân');
+  expect(text()).toContain('Số điện thoại');
   await press('Tab Chat');
   expect(text()).toContain('Tất cả hội thoại');
 });
